@@ -9,7 +9,9 @@ import { HandDrawnButton } from "@/components/HandDrawnButton";
 export default function Letter() {
   const [answered, setAnswered] = useState<boolean | null>(null);
   const [noBtnPosition, setNoBtnPosition] = useState({ x: 0, y: 0 });
-  const [hoverCount, setHoverCount] = useState(0);
+  const [noClicks, setNoClicks] = useState(0);
+  const [errorPage, setErrorPage] = useState(false);
+  const [yesScale, setYesScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const createResponse = useCreateResponse();
 
@@ -46,26 +48,49 @@ export default function Letter() {
     frame();
   };
 
-  const handleNoHover = () => {
-    if (answered !== null) return;
+  const handleNoClick = () => {
+    if (answered !== null || errorPage) return;
     
-    // Make the button run away
-    setHoverCount(prev => prev + 1);
-    
-    // Only move a few times, or it gets annoying to test
-    if (hoverCount < 10) {
-      const x = (Math.random() - 0.5) * 300;
-      const y = (Math.random() - 0.5) * 300;
-      setNoBtnPosition({ x, y });
+    const nextClicks = noClicks + 1;
+    setNoClicks(nextClicks);
+    setYesScale(prev => prev + 0.5);
+
+    if (nextClicks >= 5) {
+      setErrorPage(true);
+      return;
     }
+    
+    // Move the button
+    const x = (Math.random() - 0.5) * 500;
+    const y = (Math.random() - 0.5) * 500;
+    setNoBtnPosition({ x, y });
   };
 
-  const handleNoClick = () => {
-    // If they somehow catch it
-    if (answered !== null) return;
-    setAnswered(false);
-    createResponse.mutate({ answer: false });
-  };
+  if (errorPage) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 text-center bg-red-50">
+        <div className="max-w-xl">
+          <div className="text-red-500 text-8xl mb-6 mx-auto w-fit">
+            <X size={120} strokeWidth={2} />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-red-600 mb-4 font-mono">
+            404: LOVE_NOT_FOUND
+          </h1>
+          <p className="text-xl text-red-500 font-mono">
+            The system has encountered a critical error. The "No" option has been disabled due to repetitive misuse. Please contact administrator or try selecting "Yes" to restore system stability.
+          </p>
+          <div className="mt-12">
+             <HandDrawnButton 
+              onClick={() => window.location.reload()}
+              className="text-xl px-6 py-2"
+            >
+              Restart System
+            </HandDrawnButton>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (answered === true) {
     return (
@@ -166,28 +191,30 @@ export default function Letter() {
           <h2 className="text-6xl md:text-8xl font-bold text-primary drop-shadow-sm rotate-[-2deg] mb-8">
             Will you be my Valentine?
           </h2>
-          <p className="text-xl text-ink/60">
-            (Please say yes, I coded this whole thing for you 🥺)
-          </p>
         </HandwrittenSection>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-24 items-center justify-center h-40">
-          <HandDrawnButton 
-            onClick={handleYes}
-            className="text-3xl px-12 py-4 bg-primary text-white hover:scale-110 active:scale-95 transition-transform"
+          <motion.div
+            animate={{ scale: yesScale }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            YES! ❤️
-          </HandDrawnButton>
+            <HandDrawnButton 
+              onClick={handleYes}
+              className="text-3xl px-12 py-4 bg-primary text-white hover:scale-105 active:scale-95 transition-transform"
+            >
+              YES! ❤️
+            </HandDrawnButton>
+          </motion.div>
 
           <motion.div
             animate={{ x: noBtnPosition.x, y: noBtnPosition.y }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            onMouseEnter={handleNoHover}
             className="relative"
           >
             <HandDrawnButton 
               variant="secondary"
               onClick={handleNoClick}
+              onMouseEnter={handleNoClick}
               className="text-2xl px-8 py-3 opacity-80 hover:opacity-100"
             >
               No
