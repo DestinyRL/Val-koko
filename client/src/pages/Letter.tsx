@@ -53,16 +53,19 @@ export default function Letter() {
     
     const nextClicks = noClicks + 1;
     setNoClicks(nextClicks);
-    setYesScale(prev => prev + 0.5);
+    setYesScale(prev => Math.min(prev + 0.2, 2.5));
 
     if (nextClicks >= 5) {
       setErrorPage(true);
       return;
     }
     
-    // Move the button
-    const x = (Math.random() - 0.5) * 500;
-    const y = (Math.random() - 0.5) * 500;
+    // Move the button to a visible area on the screen
+    // We'll use a safer range to keep it clickable and visible
+    const maxX = window.innerWidth / 3;
+    const maxY = window.innerHeight / 3;
+    const x = (Math.random() - 0.5) * maxX;
+    const y = (Math.random() - 0.5) * maxY;
     setNoBtnPosition({ x, y });
   };
 
@@ -159,9 +162,11 @@ export default function Letter() {
           <div className="text-lg md:text-xl text-ink/60 mb-4 font-bold tracking-widest uppercase">
             Start Here
           </div>
-          <p className="text-3xl md:text-5xl leading-relaxed text-ink font-handwriting-2">
-            "I was going to write you a letter, but then I realized this is the language we both understand... plus I have a shitty handwriting."
-          </p>
+          <img 
+            src="/images/intro_text.png" 
+            alt="I was going to write you a letter, but then I realized this is the language we both understand... plus I have a shitty handwriting."
+            className="max-w-full h-auto mx-auto"
+          />
           <div className="mt-12 text-ink/40 animate-bounce">
             Scroll down ↓
           </div>
@@ -171,26 +176,22 @@ export default function Letter() {
       {/* The Ups and Downs Section */}
       <div className="min-h-[60vh] flex items-center justify-center relative z-10">
         <HandwrittenSection delay={0.2} className="-rotate-1">
-          <div className="space-y-8 text-2xl md:text-3xl leading-relaxed text-ink/90">
-            <p>
-              I know we've had our <span className="text-red-500 font-bold underline decoration-wavy">ups</span> and <span className="text-blue-500 font-bold underline decoration-wavy">downs</span>.
-            </p>
-            <p>
-              But every moment with you, even the difficult ones, has made me realize one thing...
-            </p>
-            <p>
-              Life is just boring without your chaos. And I want to work through everything, as long as it's with you. Things are going to get better. I promise.
-            </p>
-          </div>
+          <img 
+            src="/images/body_text.png" 
+            alt="I know we've had our ups and downs. But every moment with you has made me realize one thing... Life is just boring without your chaos. And I want to work through everything, as long as it's with you. Things are going to get better. I promise."
+            className="max-w-full h-auto mx-auto"
+          />
         </HandwrittenSection>
       </div>
 
       {/* The Question Section */}
       <div className="min-h-[80vh] flex flex-col items-center justify-center relative z-10">
         <HandwrittenSection delay={0.4} className="mb-12">
-          <h2 className="text-6xl md:text-8xl font-bold text-primary drop-shadow-sm rotate-[-2deg] mb-8">
-            Will you be my Valentine?
-          </h2>
+          <img 
+            src="/images/valentines_question.png" 
+            alt="Will you be my Valentine?"
+            className="max-w-full h-auto mx-auto"
+          />
         </HandwrittenSection>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-24 items-center justify-center h-40">
