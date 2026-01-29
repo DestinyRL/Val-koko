@@ -83,7 +83,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["var(--font-sans)"],
+        sans: ["var(--font-handwriting)", "var(--font-sans)"],
+        handwriting: ["var(--font-handwriting)"],
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
       },
