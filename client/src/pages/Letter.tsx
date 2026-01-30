@@ -25,8 +25,8 @@ function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
               opacity: 1, 
               display: "inline",
               transition: { 
-                delay: delay + (index * 0.05),
-                duration: 0.1
+                delay: delay + (index * 0.02),
+                duration: 0.05
               } 
             }
           }}
