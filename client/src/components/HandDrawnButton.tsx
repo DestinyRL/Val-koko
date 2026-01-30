@@ -27,32 +27,24 @@ export function HandDrawnButton({
       )}
       {...props}
     >
-      {/* 1. THE FILL: Fades in AFTER the drawing is done */}
+      {/* Background Fill - Fades in after drawing is done */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ 
-          delay: delay + 0.8, // Wait for the 0.8s draw animation to finish
-          duration: 0.4 
-        }}
+        transition={{ delay: delay + 1.5, duration: 0.6 }}
         className={cn(
           "absolute inset-0 rounded-[255px_15px_225px_15px/15px_225px_15px_255px]",
           variant === "primary" ? "bg-primary" : "bg-white paper-shadow"
         )}
       />
 
-      {/* 2. THE DRAWING: The SVG border that traces itself */}
-      <svg 
-        className="absolute inset-0 w-full h-full pointer-events-none" 
-        viewBox="0 0 100 100" 
-        preserveAspectRatio="none"
-      >
+      {/* The Sketchy SVG Border */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
         <motion.path
-          // This path creates a slightly "shaky" hand-drawn rectangle
           d="M5,5 L95,8 L92,95 L8,92 Z" 
           fill="transparent"
-          stroke={variant === "primary" ? "#ff5c8a" : "#1a1a1a"} // High contrast colors
-          strokeWidth="4" // Thicker lines are easier to see being drawn
+          stroke={variant === "primary" ? "#ff5c8a" : "#1a1a1a"}
+          strokeWidth="3.5"
           strokeLinecap="round"
           variants={{
             hidden: { pathLength: 0, opacity: 0 },
@@ -61,14 +53,13 @@ export function HandDrawnButton({
               opacity: 1,
               transition: { 
                 delay: delay,
-                duration: 0.8, // The time it takes to "draw" the box
-                ease: "easeInOut" 
+                duration: 1.5, // Human writing speed
+                ease: [0.43, 0.13, 0.23, 0.96] 
               } 
             }
           }}
         />
       </svg>
-
       <span className="relative z-10">{children}</span>
     </motion.button>
   );
