@@ -11,7 +11,8 @@ export function HandDrawnButton({ className, variant = "primary", children, dela
   return (
     <motion.button
       initial="hidden" animate="visible"
-      whileHover={{ scale: 1.05, rotate: -1 }} whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.05, rotate: -1 }}
+      whileTap={{ scale: 0.95 }}
       className={cn(
         "relative px-8 py-3 text-xl md:text-2xl font-bold outline-none select-none",
         variant === "primary" ? "text-white" : "text-ink",
@@ -19,20 +20,23 @@ export function HandDrawnButton({ className, variant = "primary", children, dela
       )}
       {...props}
     >
+      {/* BACKGROUND FILL */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: delay + 1.5, duration: 0.6 }}
         className={cn(
-          "absolute inset-0 rounded-[255px_15px_225px_15px/15px_225px_15px_255px]",
-          variant === "primary" ? "bg-primary" : "bg-white paper-shadow"
+          "absolute inset-0 hand-drawn-border",
+          variant === "primary" ? "bg-primary border-primary" : "bg-white paper-shadow"
         )}
       />
+
+      {/* THE SLOW DRAWN BORDER */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
         <motion.path
           d="M5,5 L95,8 L92,95 L8,92 Z" 
           fill="transparent"
-          stroke={variant === "primary" ? "#ff5c8a" : "#1a1a1a"}
+          stroke={variant === "primary" ? "white" : "currentColor"}
           strokeWidth="3.5"
           strokeLinecap="round"
           variants={{
