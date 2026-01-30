@@ -6,6 +6,38 @@ import { useCreateResponse } from "@/hooks/use-response";
 import { HandwrittenSection } from "@/components/HandwrittenSection";
 import { HandDrawnButton } from "@/components/HandDrawnButton";
 
+function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
+  const characters = Array.from(text);
+  
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="inline-block"
+    >
+      {characters.map((char, index) => (
+        <motion.span
+          key={index}
+          variants={{
+            hidden: { opacity: 0, display: "none" },
+            visible: { 
+              opacity: 1, 
+              display: "inline",
+              transition: { 
+                delay: delay + (index * 0.05),
+                duration: 0.1
+              } 
+            }
+          }}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </motion.div>
+  );
+}
+
 export default function Letter() {
   const [answered, setAnswered] = useState<boolean | null>(null);
   const [noBtnPosition, setNoBtnPosition] = useState({ x: 0, y: 0 });
@@ -80,7 +112,7 @@ export default function Letter() {
             404: LOVE_NOT_FOUND
           </h1>
           <p className="text-xl text-red-500 font-mono">
-            The system has encountered a critical error. The "No" option has been disabled due to repetitive misuse. Please contact administrator or try selecting "Yes" to restore system stability.
+            The system has encountered a critical error. The "No" option has been disabled due to repetitive misuse. Please contact the administrator or try selecting "Yes" to restore system stability.
           </p>
           <div className="mt-12">
              <HandDrawnButton 
@@ -114,14 +146,14 @@ export default function Letter() {
           >
             <Heart fill="currentColor" />
           </motion.div>
-          <h1 className="text-5xl md:text-7xl font-bold text-ink mb-6 rotate-[-2deg]">
-            Yay! You made me the happiest!
+          <h1 className="text-5xl md:text-7xl font-bold text-ink mb-6 rotate-[-2deg] font-handwriting">
+            <TypewriterText text="Yay! You made me the happiest!" />
           </h1>
-          <p className="text-2xl md:text-3xl text-ink/80 font-handwriting-2">
-            (I knew you'd pick the right button ❤️)
+          <p className="text-2xl md:text-3xl text-ink/80 font-handwriting">
+            <TypewriterText text="(I knew you'd pick the right button ❤️)" delay={1.5} />
           </p>
-          <div className="mt-12 text-lg text-muted-foreground">
-            I'll pick you up at 7 PM. Dress nice!
+          <div className="mt-12 text-lg text-muted-foreground font-handwriting">
+            <TypewriterText text="I'll pick you up at 7 PM. Dress nice!" delay={3} />
           </div>
         </motion.div>
       </div>
@@ -130,7 +162,7 @@ export default function Letter() {
 
   if (answered === false) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 text-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center p-6 text-center bg-gray-50 font-handwriting">
         <div className="max-w-xl">
           <div className="text-gray-400 text-8xl mb-6 mx-auto w-fit">
             <X size={120} strokeWidth={1} />
@@ -162,12 +194,10 @@ export default function Letter() {
           <div className="text-lg md:text-xl text-ink/60 mb-4 font-bold tracking-widest uppercase">
             Start Here
           </div>
-          <img 
-            src="/images/intro_text.png" 
-            alt="I was going to write you a letter, but then I realized this is the language we both understand... plus I have a shitty handwriting."
-            className="max-w-full h-auto mx-auto"
-          />
-          <div className="mt-12 text-ink/40 animate-bounce">
+          <div className="text-3xl md:text-5xl leading-relaxed text-ink font-handwriting">
+            <TypewriterText text="I was going to write you a letter, but then I realized this is the language we both understand... plus I have shitty handwriting." />
+          </div>
+          <div className="mt-12 text-ink/40 animate-bounce font-handwriting">
             Scroll down ↓
           </div>
         </HandwrittenSection>
@@ -176,22 +206,26 @@ export default function Letter() {
       {/* The Ups and Downs Section */}
       <div className="min-h-[60vh] flex items-center justify-center relative z-10">
         <HandwrittenSection delay={0.2} className="-rotate-1">
-          <img 
-            src="/images/body_text.png" 
-            alt="I know we've had our ups and downs. But every moment with you has made me realize one thing... Life is just boring without your chaos. And I want to work through everything, as long as it's with you. Things are going to get better. I promise."
-            className="max-w-full h-auto mx-auto"
-          />
+          <div className="space-y-8 text-2xl md:text-3xl leading-relaxed text-ink/90 font-handwriting">
+            <p>
+              <TypewriterText text="I know we've had our ups and downs." />
+            </p>
+            <p>
+              <TypewriterText text="But every moment with you, even the difficult ones, has made me realize one thing..." delay={1.5} />
+            </p>
+            <p>
+              <TypewriterText text="Life is just boring without your chaos. And I want to work through everything, as long as it's with you. Things are going to get better. I promise." delay={4} />
+            </p>
+          </div>
         </HandwrittenSection>
       </div>
 
       {/* The Question Section */}
       <div className="min-h-[80vh] flex flex-col items-center justify-center relative z-10">
         <HandwrittenSection delay={0.4} className="mb-12">
-          <img 
-            src="/images/valentines_question.png" 
-            alt="Will you be my Valentine?"
-            className="max-w-full h-auto mx-auto"
-          />
+          <h2 className="text-6xl md:text-8xl font-bold text-primary drop-shadow-sm rotate-[-2deg] mb-8 font-handwriting">
+            <TypewriterText text="Will you be my Valentine?" />
+          </h2>
         </HandwrittenSection>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-24 items-center justify-center h-40">

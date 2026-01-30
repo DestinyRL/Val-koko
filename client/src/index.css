@@ -1,6 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+@font-face {
+  font-family: 'Maxwell';
+  src: url('./assets/fonts/Maxwell.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
@@ -37,7 +40,7 @@
   --radius: 0.5rem;
   
   /* Fonts */
-  --font-handwriting: 'Architects Daughter', cursive;
+  --font-handwriting: 'Maxwell', 'Architects Daughter', cursive;
   --font-handwriting-2: 'Indie Flower', cursive;
 }
 
