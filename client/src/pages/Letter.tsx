@@ -234,11 +234,13 @@ export default function Letter() {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <HandDrawnButton 
-              onClick={handleYes}
-              className="text-3xl px-12 py-4 bg-primary text-white hover:scale-105 active:scale-95 transition-transform"
-            >
-              YES! ❤️
-            </HandDrawnButton>
+  onClick={handleYes}
+  delay={0.8} // Starts drawing 0.8s after appearing
+  className="..."
+>
+  YES! ❤️
+</HandDrawnButton>
+
           </motion.div>
 
           <motion.div
