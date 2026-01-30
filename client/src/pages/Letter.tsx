@@ -146,7 +146,8 @@ export default function Letter() {
             <HandwrittenSection className="-rotate-1">
               <div className="space-y-6 text-2xl md:text-3xl text-ink">
                 <p><TypewriterText text="I know we've had our ups and downs." /></p>
-                <p><TypewriterText text="Life is boring without your chaos. I want to work through everything with you." delay={1.5} /></p>
+                <p><TypewriterText text="But every moment with you,even the difficult ones, has made me realize one thing...." /></p>
+                <p><TypewriterText text="Life is just boring without your chaos. And I want to work through everything, as long as it's with you. Things are going to get better. I promise." delay={1.5} /></p>
               </div>
             </HandwrittenSection>
             <HandDrawnButton onClick={() => goToNextStep(2, 3000)} className="mt-12" delay={4}>Keep Reading</HandDrawnButton>
