@@ -147,13 +147,13 @@ export default function Letter() {
             <Heart fill="currentColor" />
           </motion.div>
           <h1 className="text-5xl md:text-7xl font-bold text-ink mb-6 rotate-[-2deg] font-handwriting">
-            <TypewriterText text="Yay! You made me the happiest!" />
+            <TypewriterText text="I knew you'd say yes!" />
           </h1>
           <p className="text-2xl md:text-3xl text-ink/80 font-handwriting">
-            <TypewriterText text="(I knew you'd pick the right button ❤️)" delay={1.5} />
+            <TypewriterText text="(I'm so glad I realize this is the only language we both speak ❤️)" delay={1.5} />
           </p>
           <div className="mt-12 text-lg text-muted-foreground font-handwriting">
-            <TypewriterText text="I'll pick you up at 7 PM. Dress nice!" delay={3} />
+            <TypewriterText text="I can't wait to see you soon!" delay={3} />
           </div>
         </motion.div>
       </div>
@@ -208,13 +208,13 @@ export default function Letter() {
         <HandwrittenSection delay={0.2} className="-rotate-1">
           <div className="space-y-8 text-2xl md:text-3xl leading-relaxed text-ink/90 font-handwriting">
             <p>
-              <TypewriterText text="I know we've had our ups and downs." />
+              <TypewriterText text="I know we've had our ups and downs." delay={2} />
             </p>
             <p>
-              <TypewriterText text="But every moment with you, even the difficult ones, has made me realize one thing..." delay={1.5} />
+              <TypewriterText text="But every moment with you, even the difficult ones, has made me realize one thing..." delay={4.5} />
             </p>
             <p>
-              <TypewriterText text="Life is just boring without your chaos. And I want to work through everything, as long as it's with you. Things are going to get better. I promise." delay={4} />
+              <TypewriterText text="Life is just boring without your chaos. And I want to work through everything, as long as it's with you. Things are going to get better. I promise." delay={8} />
             </p>
           </div>
         </HandwrittenSection>
@@ -224,7 +224,7 @@ export default function Letter() {
       <div className="min-h-[80vh] flex flex-col items-center justify-center relative z-10">
         <HandwrittenSection delay={0.4} className="mb-12">
           <h2 className="text-6xl md:text-8xl font-bold text-primary drop-shadow-sm rotate-[-2deg] mb-8 font-handwriting">
-            <TypewriterText text="Will you be my Valentine?" />
+            <TypewriterText text="Will you be my Valentine?" delay={14} />
           </h2>
         </HandwrittenSection>
 
