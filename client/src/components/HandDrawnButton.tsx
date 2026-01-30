@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 interface HandDrawnButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary";
   children: React.ReactNode;
-  delay?: number; // Optional: Control when the drawing starts
+  delay?: number;
 }
 
 export function HandDrawnButton({ 
@@ -17,40 +17,42 @@ export function HandDrawnButton({
   return (
     <motion.button
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+      animate="visible"
       whileHover={{ scale: 1.05, rotate: -1 }}
       whileTap={{ scale: 0.95 }}
       className={cn(
-        "relative px-8 py-3 text-xl md:text-2xl font-bold outline-none select-none transition-colors duration-300",
-        variant === "primary" ? "text-white" : "text-foreground",
+        "relative px-8 py-3 text-xl md:text-2xl font-bold outline-none select-none",
+        variant === "primary" ? "text-white" : "text-ink",
         className
       )}
       {...props}
     >
-      {/* Background Fill - Animates in after/during drawing */}
+      {/* 1. THE FILL: Fades in AFTER the drawing is done */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: delay + 0.5, duration: 0.5 }}
+        transition={{ 
+          delay: delay + 0.8, // Wait for the 0.8s draw animation to finish
+          duration: 0.4 
+        }}
         className={cn(
           "absolute inset-0 rounded-[255px_15px_225px_15px/15px_225px_15px_255px]",
           variant === "primary" ? "bg-primary" : "bg-white paper-shadow"
         )}
       />
 
-      {/* The Drawing SVG Border */}
+      {/* 2. THE DRAWING: The SVG border that traces itself */}
       <svg 
         className="absolute inset-0 w-full h-full pointer-events-none" 
         viewBox="0 0 100 100" 
         preserveAspectRatio="none"
       >
         <motion.path
-          // A sketchy, irregular rectangle path
-          d="M5,2 L95,5 L92,95 L8,92 Z" 
+          // This path creates a slightly "shaky" hand-drawn rectangle
+          d="M5,5 L95,8 L92,95 L8,92 Z" 
           fill="transparent"
-          stroke={variant === "primary" ? "white" : "black"}
-          strokeWidth="3"
+          stroke={variant === "primary" ? "#ff5c8a" : "#1a1a1a"} // High contrast colors
+          strokeWidth="4" // Thicker lines are easier to see being drawn
           strokeLinecap="round"
           variants={{
             hidden: { pathLength: 0, opacity: 0 },
@@ -59,7 +61,7 @@ export function HandDrawnButton({
               opacity: 1,
               transition: { 
                 delay: delay,
-                duration: 0.8, 
+                duration: 0.8, // The time it takes to "draw" the box
                 ease: "easeInOut" 
               } 
             }
