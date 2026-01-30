@@ -25,8 +25,8 @@ function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
               opacity: 1, 
               display: "inline",
               transition: { 
-                delay: delay + (index * 0.02),
-                duration: 0.05
+                delay: delay + (index * 0.05),
+                duration: 0.1
               } 
             }
           }}
@@ -222,7 +222,7 @@ export default function Letter() {
 
       {/* The Question Section */}
       <div className="min-h-[80vh] flex flex-col items-center justify-center relative z-10">
-        <HandwrittenSection delay={0.4} className="mb-12">
+        <HandwrittenSection delay={0.2} className="mb-12">
           <h2 className="text-6xl md:text-8xl font-bold text-primary drop-shadow-sm rotate-[-2deg] mb-8 font-handwriting">
             <TypewriterText text="Will you be my Valentine?" delay={14} />
           </h2>
