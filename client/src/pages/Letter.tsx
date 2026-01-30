@@ -147,13 +147,13 @@ export default function Letter() {
             <Heart fill="currentColor" />
           </motion.div>
           <h1 className="text-5xl md:text-7xl font-bold text-ink mb-6 rotate-[-2deg] font-handwriting">
-            <TypewriterText text="I knew you'd say yes!" />
+            <TypewriterText text="I'm so glad you said yes!" />
           </h1>
           <p className="text-2xl md:text-3xl text-ink/80 font-handwriting">
-            <TypewriterText text="(I'm so glad I realize this is the only language we both speak ❤️)" delay={1.5} />
+            <TypewriterText text="(I was a little anxious, but at least now we're on the same page ❤️)" delay={1.5} />
           </p>
           <div className="mt-12 text-lg text-muted-foreground font-handwriting">
-            <TypewriterText text="I can't wait to see you soon!" delay={3} />
+            <TypewriterText text="see you soon!" delay={3} />
           </div>
         </motion.div>
       </div>
