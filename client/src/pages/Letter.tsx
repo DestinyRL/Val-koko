@@ -35,10 +35,10 @@ export default function Letter() {
   const [noClicks, setNoClicks] = useState(0);
   const [errorPage, setErrorPage] = useState(false);
   const [yesScale, setYesScale] = useState(1);
-  const createResponse = useCreateResponse();
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const createResponse = useCreateResponse();
 
   const stopAudio = () => {
     if (audioRef.current) {
@@ -49,14 +49,13 @@ export default function Letter() {
   };
 
   const playWritingSound = (durationMs: number) => {
-    stopAudio(); // Reset any existing sound
+    stopAudio();
     if (audioRef.current) {
       audioRef.current.play().catch(() => {});
       timerRef.current = setTimeout(stopAudio, durationMs);
     }
   };
 
-  // Logic to handle "Next" and play sound for the duration of the text/drawing
   const goToNextStep = (next: number, duration: number) => {
     setStep(next);
     playWritingSound(duration);
@@ -65,7 +64,7 @@ export default function Letter() {
   const handleYes = () => {
     if (answered !== null) return;
     setAnswered(true);
-    playWritingSound(2500); // Success text duration
+    playWritingSound(2000);
     createResponse.mutate({ answer: true });
     
     const duration = 3000;
@@ -91,28 +90,50 @@ export default function Letter() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center overflow-hidden relative bg-[#fdfbf7]">
+    <div className="h-screen w-full flex items-center justify-center overflow-hidden relative bg-background">
       <audio ref={audioRef} src="/pencil-write.mp3" loop />
 
+      {/* THE PAGE DESIGN: Grid + Noise (Fixed behind everything) */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.05]" 
+        style={{
+          backgroundImage: `linear-gradient(90deg, transparent 95%, currentColor 95%), 
+                            linear-gradient(currentColor 1px, transparent 1px)`,
+          backgroundSize: '24px 24px'
+        }} 
+      />
+      <svg className="fixed inset-0 pointer-events-none opacity-[0.03] z-0">
+        <filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" /></filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+      </svg>
+
       <AnimatePresence mode="wait">
-        {answered === true && (
-          <motion.div key="success" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center px-6">
+        {errorPage && (
+          <motion.div key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center p-6 relative z-10">
+            <X size={100} className="text-destructive mx-auto mb-6" />
+            <h1 className="text-4xl font-bold text-destructive mb-4 font-mono">404: LOVE_NOT_FOUND</h1>
+            <p className="max-w-md text-destructive font-mono">System error. "No" disabled. Please select "Yes" to restore stability.</p>
+            <HandDrawnButton onClick={() => window.location.reload()} className="mt-8">Restart System</HandDrawnButton>
+          </motion.div>
+        )}
+
+        {answered === true && !errorPage && (
+          <motion.div key="success" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center relative z-10 px-6">
             <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="text-primary text-8xl mb-8">
               <Heart fill="currentColor" className="mx-auto" />
             </motion.div>
-            <h1 className="text-5xl font-bold text-ink mb-4 font-handwriting">
+            <h1 className="text-5xl md:text-7xl font-bold text-ink mb-4">
               <TypewriterText text="I'm so glad you said yes!" />
             </h1>
-            <p className="text-xl text-ink/70 font-handwriting italic">
+            <p className="text-xl text-ink/70 italic">
               <TypewriterText text="see you soon!" delay={0.8} />
             </p>
           </motion.div>
         )}
 
-        {step === 0 && !answered && (
-          <motion.div key="step0" exit={{ opacity: 0 }} className="flex flex-col items-center px-6">
+        {!answered && !errorPage && step === 0 && (
+          <motion.div key="step0" exit={{ opacity: 0, y: -20 }} className="flex flex-col items-center px-6 relative z-10">
             <HandwrittenSection className="rotate-1">
-              <div className="text-3xl md:text-5xl text-ink font-handwriting">
+              <div className="text-3xl md:text-5xl text-ink">
                 <TypewriterText text="I was going to write a letter, but this is the language we both understand... plus my handwriting is shitty." />
               </div>
             </HandwrittenSection>
@@ -120,10 +141,10 @@ export default function Letter() {
           </motion.div>
         )}
 
-        {step === 1 && !answered && (
-          <motion.div key="step1" exit={{ opacity: 0 }} className="flex flex-col items-center px-6 text-center">
+        {!answered && !errorPage && step === 1 && (
+          <motion.div key="step1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col items-center px-6 text-center relative z-10">
             <HandwrittenSection className="-rotate-1">
-              <div className="space-y-6 text-2xl md:text-3xl text-ink font-handwriting">
+              <div className="space-y-6 text-2xl md:text-3xl text-ink">
                 <p><TypewriterText text="I know we've had our ups and downs." /></p>
                 <p><TypewriterText text="Life is boring without your chaos. I want to work through everything with you." delay={1.5} /></p>
               </div>
@@ -132,22 +153,26 @@ export default function Letter() {
           </motion.div>
         )}
 
-        {step === 2 && !answered && (
-          <motion.div key="step2" className="flex flex-col items-center">
-            <h2 className="text-6xl md:text-8xl font-bold text-primary mb-16 font-handwriting text-center">
+        {!answered && !errorPage && step === 2 && (
+          <motion.div key="step2" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center relative z-10">
+            <h2 className="text-6xl md:text-8xl font-bold text-primary mb-16 text-center">
               <TypewriterText text="Will you be my Valentine?" delay={0.5} />
             </h2>
-            <div className="flex gap-12 items-center">
+            <div className="flex flex-col md:flex-row gap-12 items-center h-40">
               <motion.div animate={{ scale: yesScale }}>
                 <HandDrawnButton onClick={handleYes} delay={1.8}>YES! ❤️</HandDrawnButton>
               </motion.div>
               <motion.div animate={{ x: noBtnPosition.x, y: noBtnPosition.y }}>
-                <HandDrawnButton variant="secondary" onClick={handleNoClick} delay={1.8}>No</HandDrawnButton>
+                <HandDrawnButton variant="secondary" onClick={handleNoClick} onMouseEnter={handleNoClick} delay={1.8}>No</HandDrawnButton>
               </motion.div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <div className="fixed bottom-4 right-4 text-ink/30 text-sm rotate-[-5deg] font-bold tracking-widest uppercase">
+        Made with love & code
+      </div>
     </div>
   );
 }
